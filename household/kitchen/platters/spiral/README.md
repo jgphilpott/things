@@ -11,7 +11,7 @@ Unfortunately the original file was too large to be uploaded to GitHub so the fi
 ## STL Files
 
  - [Cults3D](https://cults3d.com/en/3d-model/home/spiral-dipping-platter)
- - [GitHub](https://github.com/jgphilpott/polymorph/tree/master/app/things/household/kitchen/platters/spiral/stl)
+ - [GitHub](https://github.com/jgphilpott/things/tree/main/household/kitchen/platters/spiral/stl)
  - [GrabCAD](https://grabcad.com/library/spiral-dipping-platter-1)
  - [MyMiniFactory](https://www.myminifactory.com/object/3d-print-spiral-dipping-platter-240279)
  - [Pinshape](https://pinshape.com/items/111797-3d-printed-spiral-dipping-platter)
