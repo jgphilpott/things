@@ -1,4 +1,4 @@
-polygen = (type = "bridge", decks = 1) ->
+polygen = (type = "bridge", decks = 1, text = false, font = "garamond") ->
 
     # Declare some basic variables.
 
@@ -111,6 +111,9 @@ polygen = (type = "bridge", decks = 1) ->
     interiorCornerCutterNE = morph "cut", interiorCornerCutterNE, interiorCornerCutter
     dish = morph "join", dish, interiorCornerCutterNE
 
+    interiorCornerCutterNE.position.x = -(cardWidth + (cardPadding * 4) + thickness)
+    dish = morph "join", dish, interiorCornerCutterNE
+
     # Round the SE corner.
 
     exteriorCornerCutterSE = new Box().setWidth(thickness).setLength(thickness).setHeight(deckThickness + thickness)
@@ -131,6 +134,9 @@ polygen = (type = "bridge", decks = 1) ->
     dish = morph "cut", dish, exteriorCornerCutterSE
 
     interiorCornerCutterSE = morph "cut", interiorCornerCutterSE, interiorCornerCutter
+    dish = morph "join", dish, interiorCornerCutterSE
+
+    interiorCornerCutterSE.position.x = -(cardWidth + (cardPadding * 4) + thickness)
     dish = morph "join", dish, interiorCornerCutterSE
 
     # Round the SW corner.
@@ -155,6 +161,9 @@ polygen = (type = "bridge", decks = 1) ->
     interiorCornerCutterSW = morph "cut", interiorCornerCutterSW, interiorCornerCutter
     dish = morph "join", dish, interiorCornerCutterSW
 
+    interiorCornerCutterSW.position.x = cardWidth + (cardPadding * 4) + thickness
+    dish = morph "join", dish, interiorCornerCutterSW
+
     # Round the NW corner.
 
     exteriorCornerCutterNW = new Box().setWidth(thickness).setLength(thickness).setHeight(deckThickness + thickness)
@@ -175,6 +184,9 @@ polygen = (type = "bridge", decks = 1) ->
     dish = morph "cut", dish, exteriorCornerCutterNW
 
     interiorCornerCutterNW = morph "cut", interiorCornerCutterNW, interiorCornerCutter
+    dish = morph "join", dish, interiorCornerCutterNW
+
+    interiorCornerCutterNW.position.x = cardWidth + (cardPadding * 4) + thickness
     dish = morph "join", dish, interiorCornerCutterNW
 
     # Create the slot cutouts.
@@ -236,6 +248,27 @@ polygen = (type = "bridge", decks = 1) ->
 
     squareSlotCutter.setPositionY(0)
     dish = morph "cut", dish, squareSlotCutter
+
+    # Add the text labels.
+
+    if text
+
+        draw = new Text().setSize(cardWidth / 6).setHeight(thickness)
+        discard = new Text().setSize(cardWidth / 6).setHeight(thickness)
+
+        draw.setPositionX(cardWidth / 5).setPositionZ(-((deckThickness - thickness) / 2))
+        discard.setPositionX(-(cardWidth / 5)).setPositionZ(-((deckThickness - thickness) / 2))
+
+        draw.setText("Draw").setFont(font)
+        discard.setText("Discard").setFont(font)
+
+        draw.rotation.z = deg$rad -90
+        discard.rotation.z = deg$rad 90
+
+        # dish = morph "cut", dish, draw
+        # dish = morph "cut", dish, discard
+        # CSG is not currently working with text meshes.
+        # https://github.com/jgphilpott/polymorph/issues/16
 
     # Done!
 
