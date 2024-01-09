@@ -79,79 +79,103 @@ polygen = (type = "bridge", decks = 1) ->
     deck.setPositionY(-lengthOffset)
     dish = morph "cut", dish, deck
 
-    # Create the corner cutout.
+    # Create the corner cutouts.
 
-    cornerCutter = new Cylinder().setRadialSegments(40)
-    cornerCutter.setLength(deckThickness + thickness)
-    cornerCutter.setPositiveRadius(thickness).setNegativeRadius(thickness)
+    exteriorCornerCutter = new Cylinder().setRadialSegments(40)
+    exteriorCornerCutter.setLength(deckThickness + thickness)
+    exteriorCornerCutter.setPositiveRadius(thickness).setNegativeRadius(thickness)
 
-    # Cut the NE corner.
+    interiorCornerCutter = new Cylinder().setRadialSegments(40)
+    interiorCornerCutter.setLength(deckThickness).setPositionZ(thickness / 2)
+    interiorCornerCutter.setPositiveRadius(thickness).setNegativeRadius(thickness - cardPadding)
 
-    cornerCutterNE = new Box().setWidth(thickness).setLength(thickness).setHeight(deckThickness + thickness)
-    cornerCutterNE.setPositionX(cardWidth + (cardPadding * 4) + thickness)
-    cornerCutterNE.setPositionY((cardLength / 2) + (cardPadding * 2) + (thickness / 2))
+    # Round the NE corner.
 
-    cornerCutter.setPositionX(cardWidth + (cardPadding * 4) + (thickness / 2))
-    cornerCutter.setPositionY((cardLength / 2) + (cardPadding * 2))
+    exteriorCornerCutterNE = new Box().setWidth(thickness).setLength(thickness).setHeight(deckThickness + thickness)
+    exteriorCornerCutterNE.setPositionX(cardWidth + (cardPadding * 4) + thickness)
+    exteriorCornerCutterNE.setPositionY((cardLength / 2) + (cardPadding * 2) + (thickness / 2))
 
-    cornerCutterNE = morph "cut", cornerCutterNE, cornerCutter
-    dish = morph "cut", dish, cornerCutterNE
-    cornerCutterNE.position.x -= thickness
-    cornerCutterNE.position.y -= thickness
-    dish = morph "join", dish, cornerCutterNE
-    cornerCutterNE.position.x -= cardWidth + (cardPadding * 4) + thickness
-    dish = morph "join", dish, cornerCutterNE
+    interiorCornerCutterNE = new Box().setWidth(thickness).setLength(thickness).setHeight(deckThickness).setPositionZ(thickness / 2)
+    interiorCornerCutterNE.setPositionX(cardWidth + (cardPadding * 4))
+    interiorCornerCutterNE.setPositionY((cardLength / 2) + (cardPadding * 2) - (thickness / 2))
 
-    # Cut the SE corner.
+    exteriorCornerCutter.setPositionX(cardWidth + (cardPadding * 4) + (thickness / 2))
+    exteriorCornerCutter.setPositionY((cardLength / 2) + (cardPadding * 2))
 
-    cornerCutterSE = new Box().setWidth(thickness).setLength(thickness).setHeight(deckThickness + thickness)
-    cornerCutterSE.setPositionX(cardWidth + (cardPadding * 4) + thickness)
-    cornerCutterSE.setPositionY(-((cardLength / 2) + (cardPadding * 2) + (thickness / 2)))
+    interiorCornerCutter.setPositionX(cardWidth + (cardPadding * 4) - (thickness / 2))
+    interiorCornerCutter.setPositionY((cardLength / 2) + (cardPadding * 2) - thickness)
 
-    cornerCutter.setPositionX(cardWidth + (cardPadding * 4) + (thickness / 2))
-    cornerCutter.setPositionY(-((cardLength / 2) + (cardPadding * 2)))
+    exteriorCornerCutterNE = morph "cut", exteriorCornerCutterNE, exteriorCornerCutter
+    dish = morph "cut", dish, exteriorCornerCutterNE
 
-    cornerCutterSE = morph "cut", cornerCutterSE, cornerCutter
-    dish = morph "cut", dish, cornerCutterSE
-    cornerCutterSE.position.x -= thickness
-    cornerCutterSE.position.y += thickness
-    dish = morph "join", dish, cornerCutterSE
-    cornerCutterSE.position.x -= cardWidth + (cardPadding * 4) + thickness
-    dish = morph "join", dish, cornerCutterSE
+    interiorCornerCutterNE = morph "cut", interiorCornerCutterNE, interiorCornerCutter
+    dish = morph "join", dish, interiorCornerCutterNE
 
-    # Cut the SW corner.
+    # Round the SE corner.
 
-    cornerCutterSW = new Box().setWidth(thickness).setLength(thickness).setHeight(deckThickness + thickness)
-    cornerCutterSW.setPositionX(-(cardWidth + (cardPadding * 4) + thickness))
-    cornerCutterSW.setPositionY(-((cardLength / 2) + (cardPadding * 2) + (thickness / 2)))
+    exteriorCornerCutterSE = new Box().setWidth(thickness).setLength(thickness).setHeight(deckThickness + thickness)
+    exteriorCornerCutterSE.setPositionX(cardWidth + (cardPadding * 4) + thickness)
+    exteriorCornerCutterSE.setPositionY(-((cardLength / 2) + (cardPadding * 2) + (thickness / 2)))
 
-    cornerCutter.setPositionX(-(cardWidth + (cardPadding * 4) + (thickness / 2)))
-    cornerCutter.setPositionY(-((cardLength / 2) + (cardPadding * 2)))
+    interiorCornerCutterSE = new Box().setWidth(thickness).setLength(thickness).setHeight(deckThickness).setPositionZ(thickness / 2)
+    interiorCornerCutterSE.setPositionX(cardWidth + (cardPadding * 4))
+    interiorCornerCutterSE.setPositionY(-((cardLength / 2) + (cardPadding * 2) - (thickness / 2)))
 
-    cornerCutterSW = morph "cut", cornerCutterSW, cornerCutter
-    dish = morph "cut", dish, cornerCutterSW
-    cornerCutterSW.position.x += thickness
-    cornerCutterSW.position.y += thickness
-    dish = morph "join", dish, cornerCutterSW
-    cornerCutterSW.position.x += cardWidth + (cardPadding * 4) + thickness
-    dish = morph "join", dish, cornerCutterSW
+    exteriorCornerCutter.setPositionX(cardWidth + (cardPadding * 4) + (thickness / 2))
+    exteriorCornerCutter.setPositionY(-((cardLength / 2) + (cardPadding * 2)))
 
-    # Cut the NW corner.
+    interiorCornerCutter.setPositionX(cardWidth + (cardPadding * 4) - (thickness / 2))
+    interiorCornerCutter.setPositionY(-((cardLength / 2) + (cardPadding * 2) - thickness))
 
-    cornerCutterNW = new Box().setWidth(thickness).setLength(thickness).setHeight(deckThickness + thickness)
-    cornerCutterNW.setPositionX(-(cardWidth + (cardPadding * 4) + thickness))
-    cornerCutterNW.setPositionY((cardLength / 2) + (cardPadding * 2) + (thickness / 2))
+    exteriorCornerCutterSE = morph "cut", exteriorCornerCutterSE, exteriorCornerCutter
+    dish = morph "cut", dish, exteriorCornerCutterSE
 
-    cornerCutter.setPositionX(-(cardWidth + (cardPadding * 4) + (thickness / 2)))
-    cornerCutter.setPositionY((cardLength / 2) + (cardPadding * 2))
+    interiorCornerCutterSE = morph "cut", interiorCornerCutterSE, interiorCornerCutter
+    dish = morph "join", dish, interiorCornerCutterSE
 
-    cornerCutterNW = morph "cut", cornerCutterNW, cornerCutter
-    dish = morph "cut", dish, cornerCutterNW
-    cornerCutterNW.position.x += thickness
-    cornerCutterNW.position.y -= thickness
-    dish = morph "join", dish, cornerCutterNW
-    cornerCutterNW.position.x += cardWidth + (cardPadding * 4) + thickness
-    dish = morph "join", dish, cornerCutterNW
+    # Round the SW corner.
+
+    exteriorCornerCutterSW = new Box().setWidth(thickness).setLength(thickness).setHeight(deckThickness + thickness)
+    exteriorCornerCutterSW.setPositionX(-(cardWidth + (cardPadding * 4) + thickness))
+    exteriorCornerCutterSW.setPositionY(-((cardLength / 2) + (cardPadding * 2) + (thickness / 2)))
+
+    interiorCornerCutterSW = new Box().setWidth(thickness).setLength(thickness).setHeight(deckThickness).setPositionZ(thickness / 2)
+    interiorCornerCutterSW.setPositionX(-(cardWidth + (cardPadding * 4)))
+    interiorCornerCutterSW.setPositionY(-((cardLength / 2) + (cardPadding * 2) - (thickness / 2)))
+
+    exteriorCornerCutter.setPositionX(-(cardWidth + (cardPadding * 4) + (thickness / 2)))
+    exteriorCornerCutter.setPositionY(-((cardLength / 2) + (cardPadding * 2)))
+
+    interiorCornerCutter.setPositionX(-(cardWidth + (cardPadding * 4) - (thickness / 2)))
+    interiorCornerCutter.setPositionY(-((cardLength / 2) + (cardPadding * 2) - thickness))
+
+    exteriorCornerCutterSW = morph "cut", exteriorCornerCutterSW, exteriorCornerCutter
+    dish = morph "cut", dish, exteriorCornerCutterSW
+
+    interiorCornerCutterSW = morph "cut", interiorCornerCutterSW, interiorCornerCutter
+    dish = morph "join", dish, interiorCornerCutterSW
+
+    # Round the NW corner.
+
+    exteriorCornerCutterNW = new Box().setWidth(thickness).setLength(thickness).setHeight(deckThickness + thickness)
+    exteriorCornerCutterNW.setPositionX(-(cardWidth + (cardPadding * 4) + thickness))
+    exteriorCornerCutterNW.setPositionY((cardLength / 2) + (cardPadding * 2) + (thickness / 2))
+
+    interiorCornerCutterNW = new Box().setWidth(thickness).setLength(thickness).setHeight(deckThickness).setPositionZ(thickness / 2)
+    interiorCornerCutterNW.setPositionX(-(cardWidth + (cardPadding * 4)))
+    interiorCornerCutterNW.setPositionY((cardLength / 2) + (cardPadding * 2) - (thickness / 2))
+
+    exteriorCornerCutter.setPositionX(-(cardWidth + (cardPadding * 4) + (thickness / 2)))
+    exteriorCornerCutter.setPositionY((cardLength / 2) + (cardPadding * 2))
+
+    interiorCornerCutter.setPositionX(-(cardWidth + (cardPadding * 4) - (thickness / 2)))
+    interiorCornerCutter.setPositionY((cardLength / 2) + (cardPadding * 2) - thickness)
+
+    exteriorCornerCutterNW = morph "cut", exteriorCornerCutterNW, exteriorCornerCutter
+    dish = morph "cut", dish, exteriorCornerCutterNW
+
+    interiorCornerCutterNW = morph "cut", interiorCornerCutterNW, interiorCornerCutter
+    dish = morph "join", dish, interiorCornerCutterNW
 
     # Create the slot cutouts.
 
