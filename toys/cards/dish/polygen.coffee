@@ -153,6 +153,66 @@ polygen = (type = "bridge", decks = 1) ->
     cornerCutterNW.position.x += cardWidth + (cardPadding * 4) + thickness
     dish = morph "join", dish, cornerCutterNW
 
+    # Create the slot cutouts.
+
+    slotCutterRadius = (cardWidth + (cardPadding * 2)) / 6
+
+    roundSlotCutter = new Cylinder().setRadialSegments(40)
+    roundSlotCutter.setLength(deckThickness + thickness + satoshi)
+    roundSlotCutter.setPositiveRadius(slotCutterRadius).setNegativeRadius(slotCutterRadius)
+
+    angledSlotCutter = new Cylinder().setRadialSegments(4)
+    angledSlotCutter.setLength(deckThickness + satoshi).setPositionZ(thickness / 2)
+    angledSlotCutter.setPositiveRadius(side$sides(slotCutterRadius + (cardPadding * 2), slotCutterRadius + (cardPadding * 2)))
+    angledSlotCutter.setNegativeRadius(side$sides(slotCutterRadius, slotCutterRadius))
+    angledSlotCutter.rotation.y = deg$rad 45
+
+    squareSlotCutter = new Box().setHeight(deckThickness + thickness + satoshi)
+    squareSlotCutter.setWidth(slotCutterRadius * 2).setLength(slotCutterRadius * 2)
+
+    # Cut the slots for the draw dish.
+
+    roundSlotCutter.setPositionX(cardWidth + (cardPadding * 3) + (thickness / 2))
+    angledSlotCutter.setPositionX((cardWidth + (cardPadding * 3) + (thickness / 2)) + slotCutterRadius)
+    squareSlotCutter.setPositionX((cardWidth + (cardPadding * 3) + (thickness / 2)) + slotCutterRadius)
+
+    dish = morph "cut", dish, roundSlotCutter
+    dish = morph "cut", dish, angledSlotCutter
+    dish = morph "cut", dish, squareSlotCutter
+
+    roundSlotCutter.setPositionX((cardWidth / 2) + (cardPadding * 2) + (thickness / 2))
+    angledSlotCutter.setPositionX((cardWidth / 2) + (cardPadding * 2) + (thickness / 2))
+    squareSlotCutter.setPositionX((cardWidth / 2) + (cardPadding * 2) + (thickness / 2))
+
+    roundSlotCutter.setPositionY((cardLength / 2) + cardPadding)
+    angledSlotCutter.setPositionY(((cardLength / 2) + cardPadding) + slotCutterRadius)
+    squareSlotCutter.setPositionY(((cardLength / 2) + cardPadding) + slotCutterRadius)
+
+    dish = morph "cut", dish, roundSlotCutter
+    dish = morph "cut", dish, angledSlotCutter
+    dish = morph "cut", dish, squareSlotCutter
+
+    roundSlotCutter.setPositionY(-(cardLength / 2) - cardPadding)
+    angledSlotCutter.setPositionY((-(cardLength / 2) - cardPadding) - slotCutterRadius)
+    squareSlotCutter.setPositionY((-(cardLength / 2) - cardPadding) - slotCutterRadius)
+
+    dish = morph "cut", dish, roundSlotCutter
+    dish = morph "cut", dish, angledSlotCutter
+    dish = morph "cut", dish, squareSlotCutter
+
+    # Cut the slots for the discard dish.
+
+    roundSlotCutter.setPositionX(-((cardWidth / 2) + (cardPadding * 2) + (thickness / 2)))
+    squareSlotCutter.setPositionX(-((cardWidth / 2) + (cardPadding * 2) + (thickness / 2)))
+
+    roundSlotCutter.setPositionY(slotCutterRadius)
+    dish = morph "cut", dish, roundSlotCutter
+    roundSlotCutter.setPositionY(-slotCutterRadius)
+    dish = morph "cut", dish, roundSlotCutter
+
+    squareSlotCutter.setPositionY(0)
+    dish = morph "cut", dish, squareSlotCutter
+
     # Done!
 
     scene.add dish
