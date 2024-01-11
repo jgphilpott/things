@@ -1,0 +1,1 @@
+PNG image files can be converted to SVG files [here](https://image.online-convert.com/convert-to-svg).
