@@ -1,0 +1,1 @@
+Note: The detailed SVG was created from the JPEG file and the solid SVG was created from the PNG file.
