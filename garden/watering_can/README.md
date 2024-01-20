@@ -1,0 +1,1 @@
+This design was inspired by [this model](https://cults3d.com/en/3d-model/home/watering-can-gazzaladra-2) posted on [Cults 3D](https://cults3d.com/en).
