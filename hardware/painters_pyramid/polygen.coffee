@@ -1,4 +1,4 @@
-polygen = ->
+polygen = (roundedCap = true) ->
 
     thickness = 8
 
@@ -45,6 +45,9 @@ polygen = ->
     tabHole =  new Cylinder().setLength(tabHeight + nakamoto).setPositiveRadius((tabSize / 4) + halfTabGap).setNegativeRadius((tabSize / 4) + halfTabGap)
     tabHole.setPositionZ(tabZ).setPositionX((tabSize / 2))
 
+    topCap = new Sphere().setRadius(3).setThetaSegments(3).setPhiSegments(88).setPositionZ((tetrahedronHeight / 2) - 5.1973)
+    topCut = new Box().setWidth(12).setHeight(12).setLength(12).setPositionZ((tetrahedronHeight / 2) + 2.51)
+
     tetrahedronCut.setPositionZ(-heightDiff / 2 - satoshi)
 
     tetrahedron = morph "cut", tetrahedron, tetrahedronCut
@@ -76,5 +79,10 @@ polygen = ->
     tetrahedron = morph "join", tetrahedron, tab
 
     settings.set "ui.title", "painters_tetrahedron"
+
+    if roundedCap
+
+        tetrahedron = morph "cut", tetrahedron, topCut
+        tetrahedron = morph "join", tetrahedron, topCap
 
     scene.add tetrahedron
