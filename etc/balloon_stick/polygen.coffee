@@ -1,57 +1,92 @@
-polygen = (item = "holder") -> # Item should = 'holder' or 'stick'.
+polygen = (item = "cup", cupTopSupport = true) -> # Item should = 'cup', 'stick' or 'stand'.
+
+    # Basic Variables
+
+    cupRadius = 18
+    cupHeight = 18
+    cupThickness = 1.8
 
     slotCount = 3
-    slotWidth = 3
+    slotWidth = 4
     slotAngle = 360 / slotCount
 
-    stickRadius = 2.5
+    stickRadius = 2.65
     stickHeight = 300
-    stickThickness = 1
+    stickThickness = 0.65
+    stickAttachmentSize = 10
 
-    holderRadius = 16.5
-    holderHeight = 16.5
-    holderThickness = 1.5
+    # Mesh Setup
 
-    holder = new Cone().setHeight(holderHeight).setRadius(holderRadius)
-    holderCut = new Cone().setHeight(holderHeight).setRadius(holderRadius).setPositionZ(-holderThickness)
+    if item is "cup"
 
-    stick = new Cylinder().setPositiveRadius(stickRadius).setNegativeRadius(stickRadius).setLength(stickHeight)
-    stickCut = new Cylinder().setPositiveRadius(stickRadius - stickThickness).setNegativeRadius(stickRadius - stickThickness).setLength(stickHeight + stickThickness)
+        cup = new Cone().setHeight(cupHeight).setRadius(cupRadius)
+        cupCut = new Cone().setHeight(cupHeight).setRadius(cupRadius).setPositionZ(-cupThickness)
 
-    holderTop = new Cylinder().setPositiveRadius(stickRadius + holderThickness).setNegativeRadius(stickRadius + holderThickness)
-    holderTop.setLength(holderHeight / 2).setPositionZ(holderHeight / 2)
+        cupTop = new Cylinder().setPositiveRadius(stickRadius + cupThickness).setNegativeRadius(stickRadius + cupThickness)
+        cupTop.setLength(stickAttachmentSize).setPositionZ((stickAttachmentSize / 2) + (cupHeight / 4))
 
-    holderTopCut = new Cylinder().setPositiveRadius(stickRadius).setNegativeRadius(stickRadius)
-    holderTopCut.setLength(holderHeight / 2).setPositionZ((holderHeight / 2) + holderThickness)
+        cupTopCut = new Cylinder().setPositiveRadius(stickRadius + (stickThickness / 2)).setNegativeRadius(stickRadius + (stickThickness / 2))
+        cupTopCut.setLength(stickAttachmentSize).setPositionZ((stickAttachmentSize / 2) + (cupHeight / 4) + cupThickness)
 
-    slotEnd = new Cylinder().setPositiveRadius(slotWidth).setNegativeRadius(slotWidth).setLength(holderHeight)
-    slotEnd.setPositionY(holderRadius / 2).setRotationX(deg$rad(45))
+        slotBox = new Box().setWidth(slotWidth).setLength(cupRadius).setHeight(cupHeight * 2).setPositionY(cupRadius)
 
-    slotBox = new Box().setWidth(slotWidth).setLength(holderRadius).setHeight(holderHeight).setPositionY(holderRadius)
+        slotEnd = new Cylinder().setPositiveRadius(slotWidth).setNegativeRadius(slotWidth).setLength(cupHeight)
+        slotEnd.setPositionY(cupRadius / 2).setRotationX(deg$rad(45))
 
-    if item is "holder"
+        if cupTopSupport
 
-        settings.set "ui.title", "balloon_holder (" + slotCount + " slots)"
-
-        holderTop = morph "cut", holderTop, holderTopCut
-        holder = morph "cut", holder, holderCut
-
-        for slot in [0...slotCount]
-
-            holder = morph "cut", holder, slotEnd
-            holder = morph "cut", holder, slotBox
-
-            holder.rotation.z += deg$rad slotAngle
-
-        holder = morph "cut", holder, holderTopCut
-        holder = morph "join", holder, holderTop
-
-        scene.add holder
+            cupTopSupport = new Cylinder().setPositiveRadius(stickThickness).setNegativeRadius(stickThickness).setLength(cupHeight)
+            cupTopSupport.setPositionY(cupRadius / 2).setPositionZ(-stickThickness / 2).setRotationX(deg$rad(-50))
 
     else if item is "stick"
 
-        settings.set "ui.title", "balloon_stick"
+        stick = new Cylinder().setPositiveRadius(stickRadius).setNegativeRadius(stickRadius).setLength(stickHeight)
+        stickCut = new Cylinder().setPositiveRadius(stickRadius - stickThickness).setNegativeRadius(stickRadius - stickThickness).setLength(stickHeight + stickThickness)
+
+    # Perform CSG
+
+    if item is "cup"
+
+        settings.set "ui.title", "cup (" + slotCount + " slots)"
+
+        if cupTopSupport
+
+            cupTopSupport = morph "cut", cupTopSupport, cupTopCut
+            cupTopSupport = morph "cut", cupTopSupport, cupCut
+
+            cupTopSupport.position.y += 0.1
+
+            slotAngle /= 2
+
+        cupTop = morph "cut", cupTop, cupTopCut
+        cup = morph "cut", cup, cupCut
+
+        for slot in [0...slotCount]
+
+            cup = morph "cut", cup, slotEnd
+            cup = morph "cut", cup, slotBox
+
+            cup.rotation.z += deg$rad slotAngle
+
+            if cupTopSupport
+
+                cup = morph "join", cup, cupTopSupport
+
+                cup.rotation.z += deg$rad slotAngle
+
+        cup = morph "cut", cup, cupTopCut
+        cup = morph "join", cup, cupTop
+
+        scene.add cup
+
+    else if item is "stick"
+
+        settings.set "ui.title", "stick"
 
         stick = morph "cut", stick, stickCut
 
         scene.add stick
+
+    else if item is "stand"
+
+        settings.set "ui.title", "stand"
