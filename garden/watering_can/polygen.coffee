@@ -58,7 +58,6 @@ polygen = ->
     handleBar.setNegativeRadius(handleRadius)
     handleBar.setRotationX(deg$rad(topDemiSlope))
     handleBar.setRadialSegments(segments * 10)
-    handleBar.setLock(true).add()
 
     handleTop = new Box()
     handleTop.setWidth(handleSize)
@@ -66,19 +65,52 @@ polygen = ->
     handleTop.setHeight(handleRadius)
     handleTop.setPositionY(-middleDemiRadius / 2)
     handleTop.setPositionZ(topHeight - (handleRadius / 2))
-    handleTop.setLock(true).add()
 
     handleBottom = new Box()
     handleBottom.setWidth(handleSize)
     handleBottom.setLength(middleDemiRadius + bottomDemiRadius)
     handleBottom.setHeight(handleRadius)
-    handleBottom.setPositionY(-middleDemiRadius + side$angle(bottomDemiSlope, true, null, (handleRadius / 2)))
+    handleBottom.setPositionY(-middleDemiRadius + side$angle(bottomDemiSlope, true, null, (handleRadius / 2)) + nakamoto)
     handleBottom.setRotationX(deg$rad(-bottomDemiSlope))
-    handleBottom.setLock(true).add()
+
+    handleBarCut = new Box()
+    handleBarCut.setWidth(handleRadius * 4)
+    handleBarCut.setLength(handleRadius * 4)
+    handleBarCut.setHeight(handleLength * 2)
+    handleBarCut.setPositionY(-middleRadius - side$angle((90 - topDemiSlope), true, (handleRadius * 2)))
+    handleBarCut.setPositionZ(topHeight / 2)
+    handleBarCut.setRotationX(deg$rad(topDemiSlope - 90))
+
+    handleTopCut = new Box()
+    handleTopCut.setWidth(handleSize * 2)
+    handleTopCut.setLength(handleLength * 2)
+    handleTopCut.setHeight(handleSize * 2)
+    handleTopCut.setPositionZ(topHeight + handleSize)
+
+    handleBottomCut = new Box()
+    handleBottomCut.setWidth(handleSize * 4)
+    handleBottomCut.setLength(handleLength * 2)
+    handleBottomCut.setHeight(handleSize * 4)
+    handleBottomCut.setPositionY(-middleDemiRadius - side$angle(bottomDemiSlope, true, null, (handleSize * 2)) + nakamoto)
+    handleBottomCut.setRotationX(deg$rad(-bottomDemiSlope))
+
+    handleBar = morph "cut", handleBar, handleTopCut
+    handleBar = morph "cut", handleBar, handleBottomCut
+
+    handleTop = morph "cut", handleTop, handleBarCut
+    handleTop = morph "cut", handleTop, canTopCut
+
+    handleBottom = morph "cut", handleBottom, handleBarCut
+    handleBottom = morph "cut", handleBottom, canBottom
+    handleBottom = morph "cut", handleBottom, canTopCut
 
     canTop = morph "cut", canTop, canTopCut
     canBottom = morph "cut", canBottom, canBottomCut
 
+    handle = morph "join", handleBar, handleTop
+    handle = morph "join", handle, handleBottom
+
     can = morph "join", canTop, canBottom
+    can = morph "join", can, handle
 
     scene.add can
