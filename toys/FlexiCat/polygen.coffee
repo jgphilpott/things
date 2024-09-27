@@ -4,7 +4,7 @@ polygen = (size = "Long") => # 'Short' or 'Long'
 
     keychain = new Torus(radius: 12.5, thickness: 1.75).add()
 
-    keychain.rotateY(deg$rad 90).setPositionZ(22).setPositionX(-20)
+    keychain.rotateY(deg$rad 125).setPositionZ(21).setPositionX(-14)
 
     importer.importFile "OBJ", "./app/things/toys/FlexiCat/files/FlexiCat" + size + ".obj"
 
